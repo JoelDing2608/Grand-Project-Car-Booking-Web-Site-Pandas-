@@ -1,0 +1,123 @@
+"""GP121-Grand Projet Informatique-Semestre 2"""
+
+#IMPORT:
+
+from pandas import *
+
+#PROGRAMME:
+
+df_clients  = read_json("./data/clients.json") #On lit le contenu de la dataframe
+df_vehicules  = read_json("./data/vehicules.json")
+df_tarifs = read_json("./data/tarifs.json")
+print(df_clients)
+print("="*75)
+print(df_vehicules)
+print("="*75)
+print(df_tarifs)
+print("="*75)
+
+mask = df_clients["age"] > 25 #Le mask nous prend que ce que l'on veut voir, donc ici, les personnes avec des âges > 25ans
+d = df_clients[mask]
+print(d)
+print("="*75)
+
+
+
+#TEST:
+
+
+print("="*75)
+
+
+
+""" Location de voiture par un (nouveau) client """
+
+
+def louer(dfc,dfv,data):
+    mask=dfc["num_permis"]==data["np"]
+    if dfc[mask].empty: #Si le client n'existe pas encore
+        dfc.loc[dfc.shape[0]]=[data["nom"],data["prenom"],data["age"],data["np"],data["id"],data["prix"]]
+    else:
+        dfc.loc[mask, ["age", "prix_location", "id_vehicule"]] = [data["age"], data["prix"], data["id"]]
+    mask=dfv["id"]==data["id"]
+    dfv.loc[mask,["date_debut","date_fin"]]=[data["dd"],data["df"]]
+
+dico={"nom":"HHHH","prenom":"J","age":30,"np":10000,"id":1,"prix":20,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
+louer(df_clients,df_vehicules,dico)
+print(df_clients)
+print(df_vehicules)
+
+
+"""Afficher la grille tarifaire"""
+
+def grille_tarifaire(dft):
+    return dft.to_string(index=False)
+
+
+"""Terminer une location"""
+
+def km_ok(id,dfv,km):
+    mask=dfv["id"]==id
+    return dfv[mask].iloc[0]["kilometrage"] < km #Si le kilometrage ancien < nouveau kilometrage, c'est VRAI/ Sinon c'est FAUX, car l'ancien kilometrage ne peut pas être > au nouveau
+
+def terminer_location(dfv,dfc,id,nv_km):
+   #Acceder au vehicule d'identifiant id
+   mask = dfv["id"]==id
+   #Mettre a jour les date début et date fin ainsi que le nouveau km du vehicule
+   dfv.loc[mask,["date_debut","date_fin","kilometrage"]]==["","",nv_km]
+   #Acceder au donnees clients
+   mask=dfc["id_vehicules"]==id
+   #Mettre a jour id_vehicules du client et prix
+   dfc.loc[mask,["id_vehicules","prix_location"]]==[-1,0]
+
+
+
+"""Annuler une location"""
+
+def sup_location(dfv,id,dfc):
+    #Acceder au vehicule d'identifiant id
+    mask=dfv["id"]==id
+    #Mettre a jour les date début et date fin ainsi que le nouveau km du vehicule
+    dfv.loc[mask,["date_debut","date_fin"]]==["",""]
+    #Acceder au donnees clients
+    mask=dfc["id_vehicules"]==id
+    #Mettre a jour id_vehicules du client et prix
+    dfc.loc[mask,["id_vehicules","prix_location"]]==[-1,0]
+
+
+
+
+
+"""afficher les vehicules disponibles """
+
+def vehicules_dispo(dfv):
+    mask = df_vehicules["date_debut"] == "" #Comme y'a pas de date de début, donc la voiture n'a pas encore été loué
+    df_clean=dfv[mask].drop(columns=["date_debut","date_fin"])#drop enlever date debut et date fin car inutile
+    return df_clean.to_string(index=False)
+
+print(vehicules_dispo(df_vehicules))
+
+
+
+"""Renvoyer le tarif d'un véhicule"""
+
+def afficher_tarifs(dft,dfv,id):
+    mask=dfv["id"]==id
+    df_join=dfv[mask].merge(dft,how='inner', on=['gamme','type'])#merge va fusionner 2 DataFrame, ici, il fusionne les dataframes et ne prend pas en compte les doublons, donc "gamme" et "type"
+    prix, assurance, caution = df_join.iloc[0]["prix"], df_join.iloc[0]["assurance"],df_join.iloc[0]["caution"]
+    return prix,assurance,caution
+
+
+"""Modifier le parc automobile"""
+
+def modif_parc_auto(dfc,dfv,data):
+    mask = dfv["id"] == data["id"]
+    if dfv[mask].empty:
+        dfv.loc[dfc.shape[0]]=[data["id"],data["type"],data["marque"],data["modele"],data["carburant"],data["gamme"],data["km"]]
+    else:
+        dfv.loc[mask, ["age", "prix_location", "id_vehicule"]] = [data["age"], data["prix"], data["id"]]
+    mask=dfv["id"]==data["id"]
+    dfv.loc[mask,["date_debut","date_fin"]]=[data["db"],data["df"]]
+
+dico2={"id":17,"type":"Z","marque":"Patrick_Sebastien","modele":"2021","carburant":"CORONA","gamme":"VIRUS","km":99999}
+
