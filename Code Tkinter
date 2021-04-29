@@ -1,1 +1,75 @@
+"""
+G121 Programmation
+Bergez_Ding_Fischer_Hu
+Vrai code
+"""
+
+import tkinter as tk
+import btn_louer_veh as lv
+import Vehicule_dispos as VD 
+import Terminer_location as tl
+import Annuler_location as al
+import Tarif_vehicule as tv
+import Ajouter_vehicule as av
+import Retirer_vehicule as rv
+"import GP121_Informatique as gp"
+
+
+
+def louer_veh():  #marche mais petit problème
+    lv.run(app)
+
+def vehicule_dispo():  #marche, petit problème encore
+    VD.run(app)
+
+def terminer_location():    #enlève la date mais change pas le kilométrage
+    tl.run(app)
+
+def annuler_location():  #marche
+    al.run(app)
+
+def ajouter_veh():   #marche très bien (mais ne change pas la liste de véhicule)
+    av.run(app)
+
+def retirer_veh():  #marche très bien 
+    rv.run(app)
+
+def tarif_veh():   #marche très bien 
+    tv.run(app)
+    
+
+app = tk.Tk()
+app.title("Locations de voitures")
+app.geometry("800x600")
+app.iconbitmap('cartransport_coch_3575.ico')
+frame = tk.Frame(app, bg="#3669A7")
+frame.place(relwidth=1, relheight=1) #la fenetre va prendre la place de toute la fenetre principale
+titre_frame = tk.Label(frame, text ="Louer, c'est rouler !", bg = "#3669A7", fg = "black", font = ("Impact", 34))
+titre_frame.pack()
+
+
+btn_1= tk.Button(frame, text="Louer un véhicule", command=louer_veh, font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_1.place(relx=0.29, rely= 0.2, relwidth=0.42, relheight=0.06)
+
+btn_2 = tk.Button(frame, text="Annuler une location", command=annuler_location, font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_2.place(relx=0.04, rely=0.35,relwidth=0.42, relheight=0.06 )
+
+btn_3 = tk.Button(frame, text="Terminer une location", command=terminer_location, font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_3.place(relx=0.51, rely=0.35, relwidth=0.42, relheight=0.06)
+
+btn_4 = tk.Button(frame, text="Afficher les véhicules\n disponibles", command=vehicule_dispo, font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_4.place(relx=0.04, rely=0.5, relwidth=0.42, relheight=0.1)
+
+btn_5 = tk.Button(frame, text="Ajouter un véhicule\n au parc automobile", command=ajouter_veh, font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_5.place(relx=0.51, rely=0.5, relwidth=0.42, relheight=0.1)
+
+btn_6 = tk.Button(frame, text="Retirer un véhicule\n du parc automobile", command=retirer_veh,font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_6.place(relx=0.04, rely=0.65, relwidth=0.42, relheight=0.1)                
+
+btn_7 = tk.Button(frame, text="Tarif d'un véhicule", command=tarif_veh,font=("Calibri",14), bg="#90A1C7", fg="black")
+btn_7.place(relx=0.51, rely=0.65, relwidth=0.42, relheight=0.1)
+
+app.mainloop()
+
+#voiture déjà louée, afficher un message d'erreur grâce à messagebox
 
