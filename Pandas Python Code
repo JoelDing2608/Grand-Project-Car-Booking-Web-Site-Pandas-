@@ -29,8 +29,9 @@ def louer(dfc,dfv,data):
     mask=dfv["id"]==data["id"]
     dfv.loc[mask,["date_debut","date_fin"]]=[data["dd"],data["df"]]
 
-#dico={"nom":"HHHH","prenom":"J","age":30,"np":101,"id":2,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
-#louer(df_clients,df_vehicules,dico)
+dico={"nom":"HHHH","prenom":"J","age":30,"np":10000,"id":2,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
+
+
 
 
 
@@ -100,7 +101,7 @@ def afficher_tarifs(dft,dfv,id):
 def ajouter_vehicules(dfv, data):
     dfv.loc[dfv.shape[0]] = [dfv.iloc[-1]["id"]+1, data["type"], data["marque"], data["modele"], data["carburant"], data["gamme"], data["km"], "", ""]
 
-#dico4={"id":41,"type":"ZI","marque":"MERCEGREC","modele":"fiat 500","carburant":"eric zemmour","gamme":"DBZ","km":999,"date_debut":"","date_fin":""} # On définit un dictionnaire où on va demander les infos que l'on veut au client
+dico4={"id":41,"type":"ZI","marque":"MERCEGREC","modele":"fiat 500","carburant":"eric zemmour","gamme":"DBZ","km":999,"date_debut":"","date_fin":""} # On définit un dictionnaire où on va demander les infos que l'on veut au client
 
 ajouter_vehicules(df_vehicules,dico4)
 
