@@ -29,8 +29,8 @@ def louer(dfc,dfv,data):
     mask=dfv["id"]==data["id"]
     dfv.loc[mask,["date_debut","date_fin"]]=[data["dd"],data["df"]]
 
-dico={"nom":"HHHH","prenom":"J","age":30,"np":2,"id":-1,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
-
+dico={"nom":"HHHH","prenom":"J","age":30,"np":11,"id":2,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
+louer(df_clients,df_vehicules,dico)
 
 """Afficher la grille tarifaire"""
 
@@ -75,14 +75,13 @@ def vehicules_dispo(dfv):
     df_clean=dfv[mask].drop(columns=["date_debut","date_fin"])#drop enlever date debut et date fin car inutile
     return df_clean.to_string(index=False)
 
-
 """afficher les vehicules indisponibles """
 
 def vehicules_indispo(dfv):
     mask = df_vehicules["date_debut"] != "" #Comme y'a pas de date de début, donc la voiture n'a pas encore été loué
-    df_clean=dfv[mask].drop(columns=["date_debut","date_fin"])#drop enlever date debut et date fin car inutile
-    return df_clean.to_string(index=False)
+    return dfv[mask].to_string(index=False)
 
+print(vehicules_indispo(df_vehicules))
 
 
 """Renvoyer le tarif d'un véhicule"""
