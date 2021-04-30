@@ -29,8 +29,7 @@ def louer(dfc,dfv,data):
     mask=dfv["id"]==data["id"]
     dfv.loc[mask,["date_debut","date_fin"]]=[data["dd"],data["df"]]
 
-dico={"nom":"HHHH","prenom":"J","age":30,"np":10000,"id":2,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
-
+dico={"nom":"HHHH","prenom":"J","age":30,"np":2,"id":-1,"prix":1000,"dd":"12-05-2021","df":"13-05-2021"} # On définit un dictionnaire où on va demander les infos que l'on veut au client
 
 
 """Afficher la grille tarifaire"""
@@ -63,11 +62,11 @@ def sup_location(dfv,id,dfc):
     #Acceder au vehicule d'identifiant id
     mask=dfv["id"]==id
     #Mettre a jour les date début et date fin ainsi que le nouveau km du vehicule
-    dfv.loc[mask,["date_debut","date_fin"]]==["",""]
+    dfv.loc[mask,["date_debut","date_fin"]]=["",""]
     #Acceder au donnees clients
     mask=dfc["id_vehicules"]==id
     #Mettre a jour id_vehicules du client et prix
-    dfc.loc[mask,["id_vehicules","prix_location"]]==[-1,0]
+    dfc.loc[mask,["id_vehicules","prix_location"]]=[-1,0]
 
 """afficher les vehicules disponibles """
 
@@ -102,9 +101,8 @@ def ajouter_vehicules(dfv, data):
 dico4={"id":41,"type":"ZI","marque":"MERCEGREC","modele":"fiat 500","carburant":"eric zemmour","gamme":"DBZ","km":999,"date_debut":"","date_fin":""} # On définit un dictionnaire où on va demander les infos que l'on veut au client
 
 
-
 def retirer_vehicules(dfv,id):
-    df_del=dfv.drop(id-1)
+    df_del=dfv.drop(id-1,inplace=True)
     return df_del.to_string(index=False)
 
 
